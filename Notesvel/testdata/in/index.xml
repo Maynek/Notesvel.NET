@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NotesvelIndex>
+    <MainTitle>テストデータ</MainTitle>
+    <SubTitle>テストデータ・サブタイトル</SubTitle>
+    <Episodes>
+		<Episode Id="TEST0001">
+            <Title>テスト第１章</Title>
+        </Episode>
+		<Episode Id="TEST0002">
+            <Title>テスト第２章</Title>
+        </Episode>
+    </Episodes>
+    <Notes>
+        <Note Id="_GLOSSARY">
+            <Title>用語集</Title>
+        </Note>
+        <Note Id="SAMPLE">
+            <Title>サンプル</Title>
+        </Note>
+    </Notes>
+</NotesvelIndex>
