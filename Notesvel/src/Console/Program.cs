@@ -73,7 +73,7 @@ namespace Maynek.Notesvel.Console
                     new NarouWriter()
                     {
                         InputEpisodeDirectory = inputEpisodeDirectory,
-                        OutputEpisodeDirectory = Path.Combine(param.OutputDirectory, @"narou\episodes\"),
+                        OutputEpisodeDirectory = Path.Combine(param.OutputDirectory, @"narou\"),
                     }.Write(novel);
 
                 }
