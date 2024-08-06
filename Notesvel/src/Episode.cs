@@ -9,14 +9,6 @@ namespace Maynek.Notesvel
         public void Add(Episode episode)
         {
             this.Add(episode.Id, episode);
-
-            if (this.Count > 1)
-            {
-                var prevEpisode = this[^2];
-
-                episode.PrevId = prevEpisode.Id;
-                prevEpisode.NextId = episode.Id;
-            }
         }
     }
 

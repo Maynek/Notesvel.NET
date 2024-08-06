@@ -6,59 +6,57 @@ using System.Xml;
 
 namespace Maynek.Notesvel.Reader
 {
+    public class InvalidFormatException : Exception { }
+
     public class NovelReader
     {
-        protected Novel novel;
-
-        protected NovelReader()
-        {
-            this.novel = new Novel();
-        }
-
-        protected Novel ReadDocument(string path)
+        public static Novel Read(string path)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(path);
 
             var element = xmlDocument.DocumentElement;
-
-            if (element != null)
+            if (element == null)
             {
-                foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
+                throw new InvalidFormatException();
+            }
+
+            var novel = new Novel();
+            foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
+            {
+                switch (childElement.Name)
                 {
-                    switch (childElement.Name)
-                    {
-                        case "MainTitle":
-                            this.novel.MainTitle = childElement.InnerText;
-                            break;
+                    case "MainTitle":
+                        novel.MainTitle = childElement.InnerText;
+                        break;
+                    
+                    case "SubTitle":
+                        novel.SubTitle = childElement.InnerText;
+                        break;
 
-                        case "SubTitle":
-                            this.novel.SubTitle = childElement.InnerText;
-                            break;
+                    case "Chapters":
+                        NovelReader.ParseChapters(childElement, novel);
+                        break;
 
-                        case "Episodes":
-                            this.ParseEpisodes(childElement);
-                            break;
-
-                        case "Notes":
-                            this.ParseNotes(childElement);
-                            break;
-                    }
+                    case "Notes":
+                        NovelReader.ParseNotes(childElement, novel);
+                        break;
                 }
             }
 
-            return this.novel;
+            return novel;
         }
 
-        protected void ParseEpisodes(XmlElement element)
+        protected static void ParseChapters(XmlElement element, Novel novel)
         {
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
                 switch (childElement.Name)
                 {
-                    case "Episode":
-                        var episode = this.ParseEpisode(childElement);
-                        this.novel.Episodes.Add(episode);
+                    case "Chapter":
+                        var chapter = new Chapter();
+                        NovelReader.ParseChapter(childElement, chapter);
+                        novel.Chapters.Add(chapter);
                         break;
                 }
             }
@@ -66,9 +64,47 @@ namespace Maynek.Notesvel.Reader
             return;
         }
 
-        protected Episode ParseEpisode(XmlElement element)
+        protected static Chapter ParseChapter(XmlElement element, Chapter chapter)
         {
-            var episode = new Episode();
+            chapter.Id = element.GetAttribute("Id");
+
+            foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
+            {
+                switch (childElement.Name)
+                {
+                    case "Title":
+                        chapter.Title = childElement.InnerText;
+                        break;
+
+                    case "Episodes":
+                        NovelReader.ParseEpisodes(childElement, chapter);
+                        break;
+                }
+            }
+
+            return chapter;
+        }
+
+
+        protected static void ParseEpisodes(XmlElement element, Chapter chapter)
+        {
+            foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
+            {
+                switch (childElement.Name)
+                {
+                    case "Episode":
+                        var episode = new Episode();
+                        NovelReader.ParseEpisode(childElement, episode);
+                        chapter.Episodes.Add(episode);
+                        break;
+                }
+            }
+
+            return;
+        }
+
+        protected static Episode ParseEpisode(XmlElement element, Episode episode)
+        {            
             episode.Id = element.GetAttribute("Id");
 
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
@@ -84,15 +120,16 @@ namespace Maynek.Notesvel.Reader
             return episode;
         }
 
-        protected void ParseNotes(XmlElement element)
+        protected static void ParseNotes(XmlElement element, Novel novel)
         {
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
                 switch (childElement.Name)
                 {
                     case "Note":
-                        var note = this.ParseNote(childElement);
-                        this.novel.Notes.Add(note);
+                        var note = new Note();
+                        NovelReader.ParseNote(childElement, note);
+                        novel.Notes.Add(note);
                         break;
                 }
             }
@@ -100,9 +137,8 @@ namespace Maynek.Notesvel.Reader
             return;
         }
 
-        protected Note ParseNote(XmlElement element)
+        protected static Note ParseNote(XmlElement element, Note note)
         {
-            var note = new Note();
             note.Id = element.GetAttribute("Id");
 
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
@@ -116,12 +152,6 @@ namespace Maynek.Notesvel.Reader
             }
 
             return note;
-        }
-
-        public static Novel Read(string path)
-        {
-            var reader = new NovelReader();
-            return reader.ReadDocument(path);
         }
     }
 }

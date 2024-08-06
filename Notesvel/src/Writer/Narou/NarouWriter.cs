@@ -26,21 +26,24 @@ namespace Maynek.Notesvel.Writer.Narou
 
         private void WriteEpisode(Novel novel)
         {
-            //Write Chapter
-            foreach (var episode in novel.Episodes)
+            //Write Episode
+            foreach (var chapter in novel.Chapters)
             {
-                string inputPath = Path.Combine(this.InputEpisodeDirectory, episode.Id + ".ntv");
+                foreach (var episode in chapter.Episodes)
+                {
+                    string inputPath = Path.Combine(this.InputEpisodeDirectory, episode.Id + ".ntv");
 
-                var bodyText = File.ReadAllText(inputPath);
+                    var bodyText = File.ReadAllText(inputPath);
 
-                bodyText = WriterUtil.ConvertBody(bodyText);
-                bodyText = WriterUtil.ConvertBodyForWeb(bodyText);
-                bodyText = NarouWriter.ConvertBodyForNarou(bodyText);
+                    bodyText = WriterUtil.ConvertBody(bodyText);
+                    bodyText = WriterUtil.ConvertBodyForWeb(bodyText);
+                    bodyText = NarouWriter.ConvertBodyForNarou(bodyText);
 
-                string fileName = episode.Id + "_" + episode.Title + ".txt";
+                    string fileName = episode.Id + "_" + episode.Title + ".txt";
 
-                string outputPath = Path.Combine(this.OutputEpisodeDirectory, fileName);
-                File.WriteAllText(outputPath, bodyText);
+                    string outputPath = Path.Combine(this.OutputEpisodeDirectory, fileName);
+                    File.WriteAllText(outputPath, bodyText);
+                }
             }
         }
 

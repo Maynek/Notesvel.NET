@@ -56,6 +56,10 @@ namespace Maynek.Notesvel.Console
                     //Read index.xml
                     var novel = NovelReader.Read(Path.Combine(param.InputDirectory, "index.xml"));
 
+                    //Setup Novel
+                    novel.SetPagenation();
+
+
                     //Write for My Web Site.
                     new MySiteWriter()
                     {

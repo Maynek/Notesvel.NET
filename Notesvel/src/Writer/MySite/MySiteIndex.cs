@@ -8,7 +8,7 @@ namespace Maynek.Notesvel.Writer.MySite
 {
     public class MySiteIndex
     {
-        public class SiteEpisodesItem
+        public class SiteEpisodeItem
         {
             [JsonPropertyName("id")]
             public string Id { get; set; } = string.Empty;
@@ -16,33 +16,52 @@ namespace Maynek.Notesvel.Writer.MySite
             public string Title { get; set; } = string.Empty;
         }
 
+        public class SiteChapterItem
+        {
+            [JsonPropertyName("id")]
+            public string Id { get; set; } = string.Empty;
+            [JsonPropertyName("title")]
+            public string Title { get; set; } = string.Empty;
+            [JsonPropertyName("episodes")]
+            public IList<SiteEpisodeItem> Episodes { get; set; } = [];
+        }
+
         [JsonPropertyName("maintitle")]
         public string MainTitle { get; set; } = string.Empty;
         [JsonPropertyName("subtitle")]
         public string SubTitle { get; set; } = string.Empty;
-
-        [JsonPropertyName("episodes")]
-        public IList<SiteEpisodesItem> Episodes { get; set; } = [];
+        [JsonPropertyName("chapters")]
+        public IList<SiteChapterItem> Chapters { get; set; } = [];
 
         public static MySiteIndex Create(Novel novel)
         {
-            var episodesIndex = new MySiteIndex()
+            var siteIndex = new MySiteIndex()
             {
                 MainTitle = novel.MainTitle,
                 SubTitle = novel.SubTitle
             };
 
-            foreach(Episode episode in novel.Episodes)
+            foreach(var chapter in novel.Chapters)
             {
-                var newEpisodes = new SiteEpisodesItem()
+                var newChapter = new SiteChapterItem()
                 {
-                    Id = episode.Id,
-                    Title = episode.Title
+                    Id = chapter.Id,
+                    Title = chapter.Title
                 };
-                episodesIndex.Episodes.Add(newEpisodes);
+                siteIndex.Chapters.Add(newChapter);
+
+                foreach (var episode in chapter.Episodes)
+                {
+                    var newEpisode = new SiteEpisodeItem()
+                    {
+                        Id = episode.Id,
+                        Title = episode.Title
+                    };
+                    newChapter.Episodes.Add(newEpisode);
+                }
             }
 
-            return episodesIndex;
+            return siteIndex;
         }
 
     }

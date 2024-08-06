@@ -3,14 +3,30 @@
 <NotesvelIndex>
     <MainTitle>テストデータ</MainTitle>
     <SubTitle>テストデータ・サブタイトル</SubTitle>
-    <Episodes>
-		<Episode Id="TEST0001">
-            <Title>テスト第１章</Title>
-        </Episode>
-		<Episode Id="TEST0002">
-            <Title>テスト第２章</Title>
-        </Episode>
-    </Episodes>
+	<Chapters>
+		<Chapter Id="c0001">
+			<Title>第１章</Title>
+			<Episodes>
+				<Episode Id="c0001e01">
+					<Title>第１章・第１話</Title>
+				</Episode>
+				<Episode Id="c0001e02">
+					<Title>第１章・第２話</Title>
+				</Episode>
+			</Episodes>			
+	    </Chapter>
+		<Chapter Id="c0002">
+			<Title>第２章</Title>
+			<Episodes>
+				<Episode Id="c0002e01">
+					<Title>第２章・第１話</Title>
+				</Episode>
+				<Episode Id="c0002e02">
+					<Title>第２章・第２話</Title>
+				</Episode>
+			</Episodes>
+		</Chapter>
+	</Chapters>
     <Notes>
         <Note Id="_GLOSSARY">
             <Title>用語集</Title>

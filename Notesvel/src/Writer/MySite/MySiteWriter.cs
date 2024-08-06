@@ -65,19 +65,23 @@ namespace Maynek.Notesvel.Writer.MySite
 
         private void WriteEpisode(Novel novel)
         {
-            foreach (var episode in novel.Episodes)
+            foreach (var chapter in novel.Chapters)
             {
-                string inputPath = Path.Combine(this.InputEpisodeDirectory, episode.Id + ".ntv");
-                var bodyText = File.ReadAllText(inputPath);
+                foreach (var episode in chapter.Episodes)
+                {
+                    string inputPath = Path.Combine(this.InputEpisodeDirectory, episode.Id + ".ntv");
+                    var bodyText = File.ReadAllText(inputPath);
 
-                bodyText = MySiteWriter.ConvertBodyForSite(bodyText);
+                    bodyText = MySiteWriter.ConvertBodyForSite(bodyText);
 
-                var newChapter = MySiteEpisode.Create(episode, bodyText);
-                var jsonText = JsonSerializer.Serialize(newChapter, MySiteWriter.SerializerOptions).Replace("\r\n", "\n");
+                    var newEpisode = MySiteEpisode.Create(episode, bodyText);
+                    var jsonText = JsonSerializer.Serialize(newEpisode, MySiteWriter.SerializerOptions).Replace("\r\n", "\n");
 
-                string outputPath = Path.Combine(this.OutputEpisodeDirectory, episode.Id + ".json");
-                File.WriteAllText(outputPath, jsonText);
+                    string outputPath = Path.Combine(this.OutputEpisodeDirectory, episode.Id + ".json");
+                    File.WriteAllText(outputPath, jsonText);
+                }
             }
+
         }
 
         private void WriteNote(Novel novel)
