@@ -108,12 +108,18 @@ namespace Maynek.Notesvel.Writer
                             ps.Push('」');
                             break;
 
+                        case '『':
+                            sbLine.Append(lineArray[i]);
+                            ps.Push('』');
+                            break;
+
                         case '（':
                             sbLine.Append(lineArray[i]);
                             ps.Push('）');
-                            break;
+                            break;                            
 
                         case '」':
+                        case '』':
                         case '）':
                             sbLine.Append(lineArray[i]);
                             if (ps.IsInParentheses(c))
