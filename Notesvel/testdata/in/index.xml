@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NotesvelIndex>
+    <MainTitle>テストデータ</MainTitle>
+    <SubTitle>テストデータ・サブタイトル</SubTitle>
+    <Chapters>
+        <Chapter Id="c0001">
+            <Title>第１章</Title>
+            <Episode Id="c0001e01">
+                <Title>第１章・第１話</Title>
+            </Episode>
+            <Episode Id="c0001e02">
+                <Title>第１章・第２話</Title>
+            </Episode>
+        </Chapter>
+        <Chapter Id="c0002">
+            <Title>第２章</Title>
+            <Episode Id="c0002e01">
+                <Title>第２章・第１話</Title>
+            </Episode>
+            <Episode Id="c0002e02">
+                <Title>第２章・第２話</Title>
+            </Episode>
+        </Chapter>
+    </Chapters>
+    <Glossary Enabled="true" Visible="true">
+        <Title>用語集</Title>
+        <Tab Id="test1">
+            <Title>登場人物</Title>
+            <Note Id="sample">
+                <Title>サンプル</Title>
+            </Note>
+        </Tab>
+    </Glossary>
+</NotesvelIndex>

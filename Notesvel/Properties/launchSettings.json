@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Notesvel": {
+      "commandName": "Project",
+      "commandLineArgs": "-i $(ProjectDir)\\testdata\\in -o $(ProjectDir)\\testdata\\out"
+    }
+  }
+}
