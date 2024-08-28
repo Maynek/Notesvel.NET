@@ -2,6 +2,7 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
+using Maynek.Notesvel.Writer.MySite;
 using System.Text;
 
 namespace Maynek.Notesvel.Writer.Narou
@@ -10,6 +11,8 @@ namespace Maynek.Notesvel.Writer.Narou
     {
         private static readonly string HeadlineReplace = @"${TEXT}";
         private static readonly string RubyReplace = @"｜${WORD}《${RUBY}》";
+        private static readonly string LinkReplace = "${WORD}";
+        private static readonly string WikipediaReplace = "${WORD}";
         private static readonly string NoteReplace = @"${WORD}";
 
         public string InputEpisodeDirectory { get; set; } = string.Empty;
@@ -19,6 +22,8 @@ namespace Maynek.Notesvel.Writer.Narou
         {
             text = WriterUtil.HeadlineRegex.Replace(text, NarouWriter.HeadlineReplace);
             text = WriterUtil.RubyRegex.Replace(text, NarouWriter.RubyReplace);
+            text = WriterUtil.LinkRegex.Replace(text, NarouWriter.LinkReplace);
+            text = WriterUtil.WikipediaRegex.Replace(text, NarouWriter.WikipediaReplace);
             text = WriterUtil.NoteRegex.Replace(text, NarouWriter.NoteReplace);
 
             return text;
