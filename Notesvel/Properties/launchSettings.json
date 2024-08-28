@@ -2,7 +2,7 @@
   "profiles": {
     "Notesvel": {
       "commandName": "Project",
-      "commandLineArgs": "-i $(ProjectDir)\\testdata\\in -o $(ProjectDir)\\testdata\\out"
+      "commandLineArgs": "-p test -i $(ProjectDir)\\testdata\\in -o $(ProjectDir)\\testdata\\out"
     }
   }
 }
