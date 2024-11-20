@@ -164,6 +164,16 @@ namespace Maynek.Notesvel.Reader
         {
             note.Id = element.GetAttribute("Id");
 
+            if (element.HasAttribute("Enabled"))
+            {
+                note.Enabled = element.GetAttribute("Enabled") == "true";
+            }
+
+            if (element.HasAttribute("Visible"))
+            {
+                note.Visible = element.GetAttribute("Visible") == "true";
+            }
+
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
                 switch (childElement.Name)

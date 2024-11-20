@@ -2,11 +2,10 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
-using System.Data;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Maynek.Notesvel.Writer.MySite
 {
@@ -125,12 +124,58 @@ namespace Maynek.Notesvel.Writer.MySite
                     string inputPath = Path.Combine(this.InputNoteDirectory, note.Id + ".ntv");
                     var fullText = WriterUtil.ReadFile(inputPath);
 
-                    var textArray = fullText.Split(">>>>>>>>\n");
 
-                    var summaryText = textArray[0];
-                    var bodyText = String.Join("", textArray, 1, textArray.Length - 1);
+                    var summaryTextSB = new StringBuilder();
+                    var bodyTextSB = new StringBuilder();
 
+                    var isSummary = false;
+                    foreach (var textLine in fullText.Split("\n"))
+                    {
+                        var hasEnter = true;
+                        var newLine = textLine;
+
+                        if (textLine.IndexOf("#HEAD") == 0)
+                        {
+                            hasEnter = false;
+
+                            var headLevel = textLine.Substring("#HEAD".Length, 1);
+                            var headtext = textLine.Substring("#HEADx:".Length);
+
+                            newLine = "<h" + headLevel + "> " + headtext + "</h" + headLevel + ">";
+                        }
+                        else if (isSummary == false && textLine == "#SUMMRY")
+                        {
+                            isSummary = true;
+                            continue;
+                        }
+                        else if (isSummary == true && textLine == "#END")
+                        {
+                            isSummary = false;
+                            continue;
+                        }
+
+                        if (isSummary)
+                        {
+                            summaryTextSB.Append(newLine);
+                            if (hasEnter)
+                            {
+                                summaryTextSB.Append('\n');
+                            }
+                        }
+                        else
+                        {
+                            bodyTextSB.Append(newLine);
+                            if ( (hasEnter))
+                            {
+                                bodyTextSB.Append('\n');
+                            }
+                        }
+                    }
+
+                    var summaryText = summaryTextSB.ToString();
                     summaryText = MySiteWriter.ConvertBodyForMySite(summaryText);
+
+                    var bodyText = bodyTextSB.ToString();
                     bodyText = MySiteWriter.ConvertBodyForMySite(bodyText);
 
                     var newNote = MySiteNote.Create(note, summaryText, bodyText);
@@ -141,9 +186,6 @@ namespace Maynek.Notesvel.Writer.MySite
                 }
             }
         }
-
-
-
 
         public void Write(Novel novel)
         {
