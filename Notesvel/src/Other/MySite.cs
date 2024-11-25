@@ -8,13 +8,13 @@ namespace Maynek.Notesvel.Other
 {
     public class MySite
     {
-        public class NovelIdListItem
+        public class IndexPageListItem
         {
             [JsonPropertyName("novelId")]
             public string NovelId { get; set; } = string.Empty;
         }
 
-        public class EpisodeIdListItem
+        public class EpisodePageListItem
         {
             [JsonPropertyName("novelId")]
             public string NovelId { get; set; } = string.Empty;
@@ -22,7 +22,13 @@ namespace Maynek.Notesvel.Other
             public string EpisodeId { get; set; } = string.Empty;
         }
 
-        public class NoteIdListItem
+        public class GlossaryPageListItem
+        {
+            [JsonPropertyName("novelId")]
+            public string NovelId { get; set; } = string.Empty;
+        }
+
+        public class NotePageListItem
         {
             [JsonPropertyName("novelId")]
             public string NovelId { get; set; } = string.Empty;
@@ -30,13 +36,14 @@ namespace Maynek.Notesvel.Other
             public string NoteId { get; set; } = string.Empty;
         }
 
-        public IList<NovelIdListItem> NovelIdList { get; } = [];
-        public IList<EpisodeIdListItem> EpisodeIdList { get; } = [];
-        public IList<NoteIdListItem> NoteIdList { get; } = [];
+        public IList<IndexPageListItem> NovelIdList { get; } = [];
+        public IList<EpisodePageListItem> EpisodePageList { get; } = [];
+        public IList<GlossaryPageListItem> GlossaryPageList { get; } = [];
+        public IList<NotePageListItem> NotePageList { get; } = [];
 
         public void AddNovelId(string novelId)
         {
-            var newItem = new NovelIdListItem()
+            var newItem = new IndexPageListItem()
             {
                 NovelId = novelId,
             };
@@ -50,16 +57,17 @@ namespace Maynek.Notesvel.Other
             {
                 foreach(var episode in chapter.Episodes)
                 {
-                    var newItem = new EpisodeIdListItem()
+                    var newItem = new EpisodePageListItem()
                     {
                         NovelId = novelId,
                         EpisodeId = episode.Id,
                     };
-                    this.EpisodeIdList.Add(newItem);
+                    this.EpisodePageList.Add(newItem);
                 }
             }
 
             // Note
+            bool hasNote = false;
             foreach (var tab in novel.Glossary.Tabs)
             {
                 if (!tab.Enabled)
@@ -74,13 +82,24 @@ namespace Maynek.Notesvel.Other
                         continue;
                     }
 
-                    var newItem = new NoteIdListItem()
+                    var newItem = new NotePageListItem()
                     {
                         NovelId = novelId,
                         NoteId = note.Id,
                     };
-                    this.NoteIdList.Add(newItem);
+                    this.NotePageList.Add(newItem);
+
+                    hasNote = true;
                 }
+            }
+
+            if (novel.Glossary.Enabled && hasNote)
+            {
+                var newItem = new GlossaryPageListItem()
+                {
+                    NovelId = novelId,
+                };
+                this.GlossaryPageList.Add(newItem);
             }
         }
     }

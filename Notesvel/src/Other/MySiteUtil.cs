@@ -33,23 +33,31 @@ namespace Maynek.Notesvel.Other
 
         public static void OutputEpisodes(string path, MySite site)
         {
-            var jsonText = MySiteUtil.GetJsonSerializedText(site.EpisodeIdList);
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.EpisodePageList);
+            File.WriteAllText(path, jsonText);
+        }
+        public static void OutputGlossaries(string path, MySite site)
+        {
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.GlossaryPageList);
             File.WriteAllText(path, jsonText);
         }
 
         public static void OutputNotes(string path, MySite site)
         {
-            var jsonText = MySiteUtil.GetJsonSerializedText(site.NoteIdList);
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.NotePageList);
             File.WriteAllText(path, jsonText);
         }
 
         public static void Output(string dir, MySite site)
         {
-            string novelsPath = Path.Combine(dir, @"novels.json");
+            string novelsPath = Path.Combine(dir, @"indexes.json");
             MySiteUtil.OutputNovels(novelsPath, site);
 
             string episodesPath = Path.Combine(dir, @"episodes.json");
             MySiteUtil.OutputEpisodes(episodesPath, site);
+
+            string glossariesPath = Path.Combine(dir, @"glossaries.json");
+            MySiteUtil.OutputGlossaries(glossariesPath, site);
 
             string notesPath = Path.Combine(dir, @"notes.json");
             MySiteUtil.OutputNotes(notesPath, site);
