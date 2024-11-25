@@ -10,6 +10,6 @@ namespace Maynek.Notesvel
         public bool Visible { get; set; } = true;
         public string Title { get; set; } = "Glossary";
 
-        public TabDictionary Tabs { get; set; } = [];
+        public TabDictionary Tabs { get; } = [];
     }
 }

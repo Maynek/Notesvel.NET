@@ -23,15 +23,6 @@ namespace Maynek.Notesvel.Console
 
                 var parser = new Parser();
 
-                //parser.AddOptionDefinition(new OptionDefinition("-p", "--project")
-                //{
-                //    Type = OptionType.RequireValue,
-                //    EventHandler = delegate (object sender, OptionEventArgs e)
-                //    {
-                //        parameter.ProjectName = e.Value;
-                //    }
-                //});
-
                 parser.AddOptionDefinition(new OptionDefinition("-i", "--input")
                 {
                     Type = OptionType.RequireValue,
@@ -59,12 +50,6 @@ namespace Maynek.Notesvel.Console
             static void Main(string[] args)
             {
                 var param = Parameter.CreateParameter(args);
-
-                //if (param.ProjectName == string.Empty)
-                //{
-                //   System.Console.WriteLine("Project Name is not set.");
-                //    return;
-                //}
 
                 if (param.InputRoot == string.Empty)
                 {
@@ -106,7 +91,7 @@ namespace Maynek.Notesvel.Console
                         OutputNoteDirectory = siteNoteDirectory
                     }.Write(novel);
 
-                    site.AddPathList(novelId, novel);
+                    site.AddPath(novelId, novel);
 
 
                     //Write for Narou.

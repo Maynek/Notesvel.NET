@@ -2,11 +2,8 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
-using Maynek.Notesvel.Writer.MySite;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 
 namespace Maynek.Notesvel.Other
 {
@@ -28,15 +25,26 @@ namespace Maynek.Notesvel.Other
             return JsonSerializer.Serialize(obj, MySiteUtil.SerializerOptions).Replace("\r\n", "\n");
         }
 
-        public static void Output(string dir, MySite site)
+        public static void OutputEpisodes(string path, MySite site)
         {
-            var el = MySiteEpisodePath.Create(site);
-            var jsonText = MySiteUtil.GetJsonSerializedText(el);
-
-            string outputPath = Path.Combine(dir, @"paths.json");
-            File.WriteAllText(outputPath, jsonText);
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.EpisodeIdList);
+            File.WriteAllText(path, jsonText);
         }
 
+        public static void OutputNotes(string path, MySite site)
+        {
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.NoteIdList);
+            File.WriteAllText(path, jsonText);
+        }
+
+        public static void Output(string dir, MySite site)
+        {
+            string episodesPath = Path.Combine(dir, @"episodes.json");
+            MySiteUtil.OutputEpisodes(episodesPath, site);
+
+            string notesPath = Path.Combine(dir, @"notes.json");
+            MySiteUtil.OutputNotes(notesPath, site);
+        }
 
     }
 }
