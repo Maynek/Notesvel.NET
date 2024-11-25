@@ -2,10 +2,10 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
-using System;
 using Maynek.Notesvel.Reader;
 using Maynek.Notesvel.Writer.MySite;
 using Maynek.Notesvel.Writer.Narou;
+using Maynek.Notesvel.Other;
 
 namespace Maynek.Notesvel.Console
 {
@@ -13,7 +13,7 @@ namespace Maynek.Notesvel.Console
     {
         class Parameter
         {
-            public string ProjectName { get; private set; } = string.Empty;
+            //public string ProjectName { get; private set; } = string.Empty;
             public string InputRoot { get; private set; } = string.Empty;
             public string OutputRoot { get; private set; } = string.Empty;
             
@@ -23,14 +23,14 @@ namespace Maynek.Notesvel.Console
 
                 var parser = new Parser();
 
-                parser.AddOptionDefinition(new OptionDefinition("-p", "--project")
-                {
-                    Type = OptionType.RequireValue,
-                    EventHandler = delegate (object sender, OptionEventArgs e)
-                    {
-                        parameter.ProjectName = e.Value;
-                    }
-                });
+                //parser.AddOptionDefinition(new OptionDefinition("-p", "--project")
+                //{
+                //    Type = OptionType.RequireValue,
+                //    EventHandler = delegate (object sender, OptionEventArgs e)
+                //    {
+                //        parameter.ProjectName = e.Value;
+                //    }
+                //});
 
                 parser.AddOptionDefinition(new OptionDefinition("-i", "--input")
                 {
@@ -60,11 +60,11 @@ namespace Maynek.Notesvel.Console
             {
                 var param = Parameter.CreateParameter(args);
 
-                if (param.ProjectName == string.Empty)
-                {
-                    System.Console.WriteLine("Project Name is not set.");
-                    return;
-                }
+                //if (param.ProjectName == string.Empty)
+                //{
+                //   System.Console.WriteLine("Project Name is not set.");
+                //    return;
+                //}
 
                 if (param.InputRoot == string.Empty)
                 {
@@ -77,36 +77,52 @@ namespace Maynek.Notesvel.Console
                     System.Console.WriteLine("Output Directory is not set.");
                     return;
                 }
+                string inputSitePath = Path.Combine(param.InputRoot, "site.xml");
 
-                string inputDirectory = Path.Combine(param.InputRoot, param.ProjectName);
-                string inputEpisodeDirectory = Path.Combine(inputDirectory, @"episodes\");
-                string inputNoteDirectory = Path.Combine(inputDirectory, @"notes\");
-                string inputIndexPath = Path.Combine(inputDirectory, "index.xml");
+                //Read site.xml
+                var site = MySiteReader.Read(inputSitePath);
 
-                //Read index.xml
-                var novel = NovelReader.Read(inputIndexPath);
-
-                //Setup Novel
-                novel.SetEpisodePagenation();
-
-                //Write for My Web Site.
-                string siteEpisodeDirectory = Path.Combine(param.OutputRoot, @"site\", param.ProjectName);
-                string siteNoteDirectory = Path.Combine(siteEpisodeDirectory, @"note\");
-                new MySiteWriter()
+                foreach (var novelId in site.NovelIdLIst)
                 {
-                    InputEpisodeDirectory = inputEpisodeDirectory,
-                    InputNoteDirectory = inputNoteDirectory,
-                    OutputEpisodeDirectory = siteEpisodeDirectory,
-                    OutputNoteDirectory = siteNoteDirectory
-                }.Write(novel);
+                    string inputDirectory = Path.Combine(param.InputRoot, novelId);
+                    string inputEpisodeDirectory = Path.Combine(inputDirectory, @"episodes\");
+                    string inputNoteDirectory = Path.Combine(inputDirectory, @"notes\");
+                    string inputIndexPath = Path.Combine(inputDirectory, "index.xml");
 
-                //Write for Narou.
-                string narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"narou\", param.ProjectName);
-                new NarouWriter()
-                {
-                    InputEpisodeDirectory = inputEpisodeDirectory,
-                    OutputEpisodeDirectory = narouEpisodeDirectory,
-                }.Write(novel);                
+                    //Read index.xml
+                    var novel = NovelReader.Read(inputIndexPath);
+
+                    //Setup Novel
+                    novel.SetEpisodePagenation();
+
+                    //Write for My Web Site.
+                    string siteEpisodeDirectory = Path.Combine(param.OutputRoot, @"site\", novelId);
+                    string siteNoteDirectory = Path.Combine(siteEpisodeDirectory, @"note\");
+                    new MySiteWriter()
+                    {
+                        InputEpisodeDirectory = inputEpisodeDirectory,
+                        InputNoteDirectory = inputNoteDirectory,
+                        OutputEpisodeDirectory = siteEpisodeDirectory,
+                        OutputNoteDirectory = siteNoteDirectory
+                    }.Write(novel);
+
+                    site.AddPathList(novelId, novel);
+
+
+                    //Write for Narou.
+                    string narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"narou\", novelId);
+                    new NarouWriter()
+                    {
+                        InputEpisodeDirectory = inputEpisodeDirectory,
+                        OutputEpisodeDirectory = narouEpisodeDirectory,
+                    }.Write(novel);
+
+                }
+
+                // Output MySite
+                string siteDirectory = Path.Combine(param.OutputRoot, @"site\");
+                MySiteUtil.Output(siteDirectory, site);
+
             }
         }
     }
