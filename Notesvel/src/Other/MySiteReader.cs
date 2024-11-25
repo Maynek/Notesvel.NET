@@ -37,7 +37,7 @@ namespace Maynek.Notesvel.Other
                 {
                     case "Novel":
                         var novelId = childElement.GetAttribute("Id");
-                        site.NovelIdLIst.Add(novelId);
+                        site.AddNovelId(novelId);
                         break;
                 }
             }

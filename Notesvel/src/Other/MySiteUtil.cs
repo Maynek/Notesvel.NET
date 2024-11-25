@@ -25,6 +25,12 @@ namespace Maynek.Notesvel.Other
             return JsonSerializer.Serialize(obj, MySiteUtil.SerializerOptions).Replace("\r\n", "\n");
         }
 
+        public static void OutputNovels(string path, MySite site)
+        {
+            var jsonText = MySiteUtil.GetJsonSerializedText(site.NovelIdList);
+            File.WriteAllText(path, jsonText);
+        }
+
         public static void OutputEpisodes(string path, MySite site)
         {
             var jsonText = MySiteUtil.GetJsonSerializedText(site.EpisodeIdList);
@@ -39,6 +45,9 @@ namespace Maynek.Notesvel.Other
 
         public static void Output(string dir, MySite site)
         {
+            string novelsPath = Path.Combine(dir, @"novels.json");
+            MySiteUtil.OutputNovels(novelsPath, site);
+
             string episodesPath = Path.Combine(dir, @"episodes.json");
             MySiteUtil.OutputEpisodes(episodesPath, site);
 

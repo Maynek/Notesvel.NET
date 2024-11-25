@@ -8,6 +8,12 @@ namespace Maynek.Notesvel.Other
 {
     public class MySite
     {
+        public class NovelIdListItem
+        {
+            [JsonPropertyName("novelId")]
+            public string NovelId { get; set; } = string.Empty;
+        }
+
         public class EpisodeIdListItem
         {
             [JsonPropertyName("novelId")]
@@ -24,13 +30,18 @@ namespace Maynek.Notesvel.Other
             public string NoteId { get; set; } = string.Empty;
         }
 
-        public List<string> NovelIdLIst { get; } = [];
-
+        public IList<NovelIdListItem> NovelIdList { get; } = [];
         public IList<EpisodeIdListItem> EpisodeIdList { get; } = [];
-
-        [JsonPropertyName("notes")]
         public IList<NoteIdListItem> NoteIdList { get; } = [];
 
+        public void AddNovelId(string novelId)
+        {
+            var newItem = new NovelIdListItem()
+            {
+                NovelId = novelId,
+            };
+            this.NovelIdList.Add(newItem);
+        }
 
         public void AddPath(string novelId, Novel novel)
         {

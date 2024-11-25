@@ -67,8 +67,10 @@ namespace Maynek.Notesvel.Console
                 //Read site.xml
                 var site = MySiteReader.Read(inputSitePath);
 
-                foreach (var novelId in site.NovelIdLIst)
+                foreach (var item in site.NovelIdList)
                 {
+                    string novelId = item.NovelId;
+
                     string inputDirectory = Path.Combine(param.InputRoot, novelId);
                     string inputEpisodeDirectory = Path.Combine(inputDirectory, @"episodes\");
                     string inputNoteDirectory = Path.Combine(inputDirectory, @"notes\");
