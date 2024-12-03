@@ -4,9 +4,9 @@
 //********************************
 using System.Text.Json.Serialization;
 
-namespace Maynek.Notesvel.Writer.MySite
+namespace Maynek.Notesvel.Writer.NextSite
 {
-    public class MySiteNote
+    public class Note
     {
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
@@ -17,9 +17,9 @@ namespace Maynek.Notesvel.Writer.MySite
         [JsonPropertyName("body")]
         public string Body { get; set; } = string.Empty;
 
-        public static MySiteNote Create(Note note, string summaryText, string bodyText)
+        public static Note Create(Notesvel.Note note, string summaryText, string bodyText)
         {
-            var newSiteNote = new MySiteNote()
+            var newSiteNote = new Note()
             {
                 Id = note.Id,
                 Title = note.Title,

@@ -7,9 +7,9 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace Maynek.Notesvel.Writer.MySite
+namespace Maynek.Notesvel.Writer.NextSite
 {
-    public class MySiteWriter
+    public class Writer
     {
         private static readonly JsonSerializerOptions SerializerOptions;
         private static readonly string HeadlineReplace = @"<h${NUM}>${TEXT}</h${NUM}>";
@@ -23,7 +23,7 @@ namespace Maynek.Notesvel.Writer.MySite
         public string OutputEpisodeDirectory { get; set; } = string.Empty;
         public string OutputNoteDirectory { get; set; } = string.Empty;
 
-        static MySiteWriter()
+        static Writer()
         {
             SerializerOptions = new JsonSerializerOptions
             {
@@ -34,7 +34,7 @@ namespace Maynek.Notesvel.Writer.MySite
 
         private static string GetJsonSerializedText(object obj)
         {
-            return JsonSerializer.Serialize(obj, MySiteWriter.SerializerOptions).Replace("\r\n", "\n");
+            return JsonSerializer.Serialize(obj, Writer.SerializerOptions).Replace("\r\n", "\n");
         }
 
 
@@ -44,17 +44,17 @@ namespace Maynek.Notesvel.Writer.MySite
             {
                 int level = m.Groups["HEAD"].ToString().Length;
 
-                string ret = MySiteWriter.HeadlineReplace;
+                string ret = Writer.HeadlineReplace;
                 ret = ret.Replace("${NUM}", level.ToString());
                 ret = ret.Replace("${TEXT}", m.Groups["TEXT"].ToString());
 
                 return ret;
             });
 
-            text = WriterUtil.RubyRegex.Replace(text, MySiteWriter.RubyReplace);
-            text = WriterUtil.LinkRegex.Replace(text, MySiteWriter.LinkReplace);
-            text = WriterUtil.WikipediaRegex.Replace(text, MySiteWriter.WikipediaReplace);
-            text = WriterUtil.NoteRegex.Replace(text, MySiteWriter.NoteReplace);
+            text = WriterUtil.RubyRegex.Replace(text, Writer.RubyReplace);
+            text = WriterUtil.LinkRegex.Replace(text, Writer.LinkReplace);
+            text = WriterUtil.WikipediaRegex.Replace(text, Writer.WikipediaReplace);
+            text = WriterUtil.NoteRegex.Replace(text, Writer.NoteReplace);
 
             text = text.Replace("\n", "<br/>");
 
@@ -63,8 +63,8 @@ namespace Maynek.Notesvel.Writer.MySite
 
         private void WriteEpisodesIndex(Novel novel)
         {
-            var index = MySiteIndex.Create(novel);
-            var jsonText = MySiteWriter.GetJsonSerializedText(index);
+            var index = Index.Create(novel);
+            var jsonText = Writer.GetJsonSerializedText(index);
 
             string outputPath = Path.Combine(this.OutputEpisodeDirectory, @"_index.json");
             File.WriteAllText(outputPath, jsonText);
@@ -80,10 +80,10 @@ namespace Maynek.Notesvel.Writer.MySite
                     var bodyText = WriterUtil.ReadFile(inputPath);
 
                     bodyText = WriterUtil.ConvertBodyForWebNovel(bodyText);
-                    bodyText = MySiteWriter.ConvertBodyForMySite(bodyText);
+                    bodyText = Writer.ConvertBodyForMySite(bodyText);
 
-                    var newEpisode = MySiteEpisode.Create(episode, bodyText);
-                    var jsonText = MySiteWriter.GetJsonSerializedText(newEpisode);
+                    var newEpisode = Episode.Create(episode, bodyText);
+                    var jsonText = Writer.GetJsonSerializedText(newEpisode);
 
                     string outputPath = Path.Combine(this.OutputEpisodeDirectory, episode.Id + ".json");
                     File.WriteAllText(outputPath, jsonText);
@@ -96,8 +96,8 @@ namespace Maynek.Notesvel.Writer.MySite
         {
             if (novel.Glossary.Enabled && novel.Glossary.Visible)
             {
-                var g = MySiteGlossary.Create(novel);
-                var jsonText = MySiteWriter.GetJsonSerializedText(g);
+                var g = Glossary.Create(novel);
+                var jsonText = Writer.GetJsonSerializedText(g);
 
                 string outputPath = Path.Combine(this.OutputEpisodeDirectory, @"note\_glossary.json");
                 File.WriteAllText(outputPath, jsonText);
@@ -173,13 +173,13 @@ namespace Maynek.Notesvel.Writer.MySite
                     }
 
                     var summaryText = summaryTextSB.ToString();
-                    summaryText = MySiteWriter.ConvertBodyForMySite(summaryText);
+                    summaryText = Writer.ConvertBodyForMySite(summaryText);
 
                     var bodyText = bodyTextSB.ToString();
-                    bodyText = MySiteWriter.ConvertBodyForMySite(bodyText);
+                    bodyText = Writer.ConvertBodyForMySite(bodyText);
 
-                    var newNote = MySiteNote.Create(note, summaryText, bodyText);
-                    var jsonText = MySiteWriter.GetJsonSerializedText(newNote);
+                    var newNote = Note.Create(note, summaryText, bodyText);
+                    var jsonText = Writer.GetJsonSerializedText(newNote);
 
                     string outputPath = Path.Combine(this.OutputNoteDirectory, note.Id + ".json");
                     File.WriteAllText(outputPath, jsonText);

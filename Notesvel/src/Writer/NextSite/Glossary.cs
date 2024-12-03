@@ -4,9 +4,9 @@
 //********************************
 using System.Text.Json.Serialization;
 
-namespace Maynek.Notesvel.Writer.MySite
+namespace Maynek.Notesvel.Writer.NextSite
 {
-    public class MySiteGlossary
+    public class Glossary
     {
         public class SiteNoteItem
         {
@@ -31,9 +31,9 @@ namespace Maynek.Notesvel.Writer.MySite
         [JsonPropertyName("tabs")]
         public IList<SiteTabItem> Tabs { get; set; } = [];
 
-        public static MySiteGlossary Create(Novel novel)
+        public static Glossary Create(Novel novel)
         {
-            var siteGlossary = new MySiteGlossary()
+            var siteGlossary = new Glossary()
             {
                 Title = novel.Glossary.Title
             };

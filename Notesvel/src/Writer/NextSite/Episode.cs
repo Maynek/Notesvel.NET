@@ -1,12 +1,12 @@
-﻿//********************************
+//********************************
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
 using System.Text.Json.Serialization;
 
-namespace Maynek.Notesvel.Writer.MySite
+namespace Maynek.Notesvel.Writer.NextSite
 {
-    public class MySiteEpisode
+    public class Episode
     {
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
@@ -19,9 +19,9 @@ namespace Maynek.Notesvel.Writer.MySite
         [JsonPropertyName("body")]
         public string Body { get; set; } = string.Empty;
 
-        public static MySiteEpisode Create(Episode episode, string bodyText)
+        public static Episode Create(Notesvel.Episode episode, string bodyText)
         {
-            var newSiteChapter = new MySiteEpisode()
+            var newSiteChapter = new Episode()
             {
                 Id = episode.Id,
                 Title = episode.Title,

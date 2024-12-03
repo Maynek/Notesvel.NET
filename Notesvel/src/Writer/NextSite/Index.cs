@@ -4,9 +4,9 @@
 //********************************
 using System.Text.Json.Serialization;
 
-namespace Maynek.Notesvel.Writer.MySite
+namespace Maynek.Notesvel.Writer.NextSite
 {
-    public class MySiteIndex
+    public class Index
     {
         public class SiteEpisodeItem
         {
@@ -35,9 +35,9 @@ namespace Maynek.Notesvel.Writer.MySite
         [JsonPropertyName("chapters")]
         public IList<SiteChapterItem> Chapters { get; set; } = [];
 
-        public static MySiteIndex Create(Novel novel)
+        public static Index Create(Novel novel)
         {
-            var siteIndex = new MySiteIndex()
+            var siteIndex = new Index()
             {
                 MainTitle = novel.MainTitle,
                 SubTitle = novel.SubTitle

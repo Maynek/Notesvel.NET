@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Site>
+<Shelf>
   <Novels>
-    <Novel Id="test" />
+    <Novel Id="test" Target="NextSite,Narou" />
   </Novels>
-</Site>
+</Shelf>

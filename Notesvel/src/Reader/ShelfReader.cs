@@ -4,32 +4,32 @@
 //********************************
 using System.Xml;
 
-namespace Maynek.Notesvel.Other
+namespace Maynek.Notesvel.Reader
 {
-    public class MySiteReader
+    public class ShelfReader
     {
-        public static MySite Read(string path)
+        public static Shelf Read(string path)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(path);
 
             var element = xmlDocument.DocumentElement;
 
-            var site = new MySite();
+            var shelf = new Shelf();
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
                 switch (childElement.Name)
                 {
                     case "Novels":
-                        MySiteReader.ParseNovels(childElement, site);
+                        ShelfReader.ParseNovels(childElement, shelf);
                         break;
                 }
             }
 
-            return site;
+            return shelf;
         }
 
-        protected static void ParseNovels(XmlElement element, MySite site)
+        protected static void ParseNovels(XmlElement element, Shelf shelf)
         {
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
@@ -37,19 +37,13 @@ namespace Maynek.Notesvel.Other
                 {
                     case "Novel":
                         var novelId = childElement.GetAttribute("Id");
-                        site.AddNovelId(novelId);
+                        var target = childElement.GetAttribute("Target");
+                        shelf.AddShelfItem(novelId, target);
                         break;
                 }
             }
 
             return;
         }
-
-        protected static Chapter ParseChapter(XmlElement element, Chapter chapter)
-        {
-            chapter.Id = element.GetAttribute("Id");
-            return chapter;
-        }
-
     }
 }

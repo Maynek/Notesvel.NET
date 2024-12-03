@@ -2,12 +2,9 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
-using Maynek.Notesvel.Writer.MySite;
-using System.Text;
-
 namespace Maynek.Notesvel.Writer.Narou
 {
-    internal class NarouWriter
+    internal class Writer
     {
         private static readonly string HeadlineReplace = @"${TEXT}";
         private static readonly string RubyReplace = @"｜${WORD}《${RUBY}》";
@@ -20,11 +17,11 @@ namespace Maynek.Notesvel.Writer.Narou
 
         private static string ConvertBodyForNarou(string text)
         {
-            text = WriterUtil.HeadlineRegex.Replace(text, NarouWriter.HeadlineReplace);
-            text = WriterUtil.RubyRegex.Replace(text, NarouWriter.RubyReplace);
-            text = WriterUtil.LinkRegex.Replace(text, NarouWriter.LinkReplace);
-            text = WriterUtil.WikipediaRegex.Replace(text, NarouWriter.WikipediaReplace);
-            text = WriterUtil.NoteRegex.Replace(text, NarouWriter.NoteReplace);
+            text = WriterUtil.HeadlineRegex.Replace(text, Writer.HeadlineReplace);
+            text = WriterUtil.RubyRegex.Replace(text, Writer.RubyReplace);
+            text = WriterUtil.LinkRegex.Replace(text, Writer.LinkReplace);
+            text = WriterUtil.WikipediaRegex.Replace(text, Writer.WikipediaReplace);
+            text = WriterUtil.NoteRegex.Replace(text, Writer.NoteReplace);
 
             return text;
         }
@@ -40,7 +37,7 @@ namespace Maynek.Notesvel.Writer.Narou
                     var bodyText = WriterUtil.ReadFile(inputPath);
 
                     bodyText = WriterUtil.ConvertBodyForWebNovel(bodyText);
-                    bodyText = NarouWriter.ConvertBodyForNarou(bodyText);
+                    bodyText = Writer.ConvertBodyForNarou(bodyText);
 
                     string fileName = episode.Id + "_" + episode.Title + ".txt";
 
