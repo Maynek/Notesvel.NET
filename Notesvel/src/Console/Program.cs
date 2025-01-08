@@ -58,19 +58,25 @@ namespace Maynek.Notesvel.Console
                     System.Console.WriteLine("Output Directory is not set.");
                     return;
                 }
-                string inputSitePath = Path.Combine(param.InputRoot, "shelf.xml");
+                var inputSitePath = Path.Combine(param.InputRoot, "shelf.xml");
 
                 //Read site.xml
                 var shelf = ShelfReader.Read(inputSitePath);
 
+                if (Directory.Exists(param.OutputRoot))
+                {
+                    Directory.Delete(param.OutputRoot, true);
+                }
+
                 foreach (var item in shelf.ItemList)
                 {
-                    string novelId = item.NovelId;
+                    var novelId = item.NovelId;
 
-                    string inputDirectory = Path.Combine(param.InputRoot, novelId);
-                    string inputEpisodeDirectory = Path.Combine(inputDirectory, @"episodes\");
-                    string inputNoteDirectory = Path.Combine(inputDirectory, @"notes\");
-                    string inputIndexPath = Path.Combine(inputDirectory, "index.xml");
+                    var inputDirectory = Path.Combine(param.InputRoot, novelId);
+                    var inputEpisodeDirectory = Path.Combine(inputDirectory, @"episodes\");
+                    var inputNoteDirectory = Path.Combine(inputDirectory, @"notes\");
+                    var inputImageDirectory = Path.Combine(inputDirectory, @"images\");
+                    var inputIndexPath = Path.Combine(inputDirectory, "index.xml");
 
                     //Read index.xml
                     var novel = NovelReader.Read(inputIndexPath);
@@ -81,8 +87,8 @@ namespace Maynek.Notesvel.Console
                     //Write for NextSite.
                     if (item.Target.Contains("NextSite"))
                     {
-                        string siteEpisodeDirectory = Path.Combine(param.OutputRoot, @"site\", novelId);
-                        string siteNoteDirectory = Path.Combine(siteEpisodeDirectory, @"note\");
+                        var siteEpisodeDirectory = Path.Combine(param.OutputRoot, @"site\", novelId);
+                        var siteNoteDirectory = Path.Combine(siteEpisodeDirectory, @"note\");
                         new Writer.NextSite.Writer()
                         {
                             InputEpisodeDirectory = inputEpisodeDirectory,
@@ -90,12 +96,30 @@ namespace Maynek.Notesvel.Console
                             OutputEpisodeDirectory = siteEpisodeDirectory,
                             OutputNoteDirectory = siteNoteDirectory
                         }.Write(novel);
+
+
+                        //Copy Images.
+                        if (Directory.Exists(inputImageDirectory))
+                        {
+                            var siteImageDirectory = Path.Combine(siteEpisodeDirectory, @"images\");
+                            if (!Directory.Exists(siteImageDirectory))
+                            {
+                                Directory.CreateDirectory(siteImageDirectory);
+                            }
+
+                            foreach (var srcPath in Directory.GetFiles(inputImageDirectory))
+                            {
+                                var fileName = Path.GetFileName(srcPath);
+                                var dstPath = Path.Combine(siteImageDirectory, fileName);
+                                File.Copy(srcPath, dstPath);
+                            }
+                        }
                     }
 
                     //Write for Narou.
                     if (item.Target.Contains("Narou"))
                     {
-                        string narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"narou\", novelId);
+                        var narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"narou\", novelId);
                         new Writer.Narou.Writer()
                         {
                             InputEpisodeDirectory = inputEpisodeDirectory,

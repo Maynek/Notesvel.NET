@@ -12,6 +12,8 @@ namespace Maynek.Notesvel.Writer.NextSite
         public string Id { get; set; } = string.Empty;
         [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
+        [JsonPropertyName("image")]
+        public string Image { get; set; } = string.Empty;
         [JsonPropertyName("prevId")]
         public string PrevId { get; set; } = string.Empty;
         [JsonPropertyName("nextId")]
@@ -25,6 +27,7 @@ namespace Maynek.Notesvel.Writer.NextSite
             {
                 Id = episode.Id,
                 Title = episode.Title,
+                Image = episode.Image,
                 PrevId = episode.PrevId,
                 NextId = episode.NextId,
                 Body = bodyText,

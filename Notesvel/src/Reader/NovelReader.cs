@@ -90,6 +90,10 @@ namespace Maynek.Notesvel.Reader
         protected static Episode ParseEpisode(XmlElement element, Episode episode)
         {            
             episode.Id = element.GetAttribute("Id");
+            if (element.HasAttribute("Image"))
+            {
+                episode.Image = element.GetAttribute("Image");
+            }
 
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
