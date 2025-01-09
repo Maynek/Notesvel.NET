@@ -51,6 +51,9 @@ namespace Maynek.Notesvel.Writer
         public static readonly string RubyPattern = @"<<(?<WORD>.+?)\|(?<RUBY>.+?)>>";
         public static readonly Regex RubyRegex;
 
+        public static readonly string PointPattern = @"''(?<WORD>.+?)''";
+        public static readonly Regex PointRegex;
+
         public static readonly string LinkPattern = @"\[\[(?<WORD>.+?)=>(?<URL>.+?)\]\]";
         public static readonly Regex LinkRegex;
 
@@ -64,6 +67,7 @@ namespace Maynek.Notesvel.Writer
         {
             HeadlineRegex = new Regex(HeadlinePattern, Options);
             RubyRegex = new Regex(RubyPattern, Options);
+            PointRegex = new Regex(PointPattern, Options);
             LinkRegex = new Regex(LinkPattern, Options);
             WikipediaRegex = new Regex(WikipediaPattern, Options);
             NoteRegex = new Regex(NotePattern, Options);

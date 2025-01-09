@@ -2,6 +2,7 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -52,6 +53,23 @@ namespace Maynek.Notesvel.Writer.NextSite
             });
 
             text = WriterUtil.RubyRegex.Replace(text, Writer.RubyReplace);
+
+            text = Regex.Replace(text, WriterUtil.PointPattern, delegate (Match m)
+            {
+                var sb = new StringBuilder();
+                var word = m.Groups["WORD"].ToString();
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    var line = Writer.RubyReplace;
+                    line = line.Replace("${WORD}", word[i].ToString());
+                    line = line.Replace("${RUBY}", "・");
+                    sb.Append(line);
+                }
+
+                return sb.ToString();
+            });
+
             text = WriterUtil.LinkRegex.Replace(text, Writer.LinkReplace);
             text = WriterUtil.WikipediaRegex.Replace(text, Writer.WikipediaReplace);
             text = WriterUtil.NoteRegex.Replace(text, Writer.NoteReplace);
