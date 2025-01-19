@@ -90,10 +90,7 @@ namespace Maynek.Notesvel.Reader
         protected static Episode ParseEpisode(XmlElement element, Episode episode)
         {            
             episode.Id = element.GetAttribute("Id");
-            if (element.HasAttribute("Image"))
-            {
-                episode.Image = element.GetAttribute("Image");
-            }
+
 
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
@@ -101,6 +98,24 @@ namespace Maynek.Notesvel.Reader
                 {
                     case "Title":
                         episode.Title = childElement.InnerText;
+                        break;
+
+                    case "NextImage":
+                        if (childElement.HasAttribute("File"))
+                        {
+                            episode.NextImageFile = childElement.GetAttribute("File");
+                        }
+
+                        if (childElement.HasAttribute("Width"))
+                        {
+                            episode.NextImageWidth = childElement.GetAttribute("Width");
+                        }
+
+                        if (childElement.HasAttribute("Height"))
+                        {
+                            episode.NextImageHeight = childElement.GetAttribute("Height");
+                        }
+
                         break;
                 }
             }

@@ -16,11 +16,12 @@ namespace Maynek.Notesvel
     {
         public string Id { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public string Image { get; set; } = string.Empty;
-
         public string PrevId { get; set; } = string.Empty;
-
         public string NextId { get; set; } = string.Empty;
+
+        public string NextImageFile { get; set; } = string.Empty;
+        public string NextImageWidth { get; set; } = string.Empty;
+        public string NextImageHeight { get; set; } = string.Empty;
 
     }
 }
