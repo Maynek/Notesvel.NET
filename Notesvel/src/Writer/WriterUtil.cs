@@ -54,14 +54,10 @@ namespace Maynek.Notesvel.Writer
         public static readonly string PointPattern = @"''(?<WORD>.+?)''";
         public static readonly Regex PointRegex;
 
-        public static readonly string LinkPattern = @"\[\[(?<WORD>.+?)=>(?<URL>.+?)\]\]";
+        public static readonly string LinkPattern = @"\[\[(?<WORD>.+?)=>(?<TARGET>.+?)\]\]";
         public static readonly Regex LinkRegex;
-
-        public static readonly string WikipediaPattern = @"\[\((?<WORD>.+?)=>(?<TITLE>.+?)\)\]";
-        public static readonly Regex WikipediaRegex;
-
-        public static readonly string NotePattern = @"\[\{(?<WORD>.+?)=>(?<ID>.+?)\}\]";
-        public static readonly Regex NoteRegex;
+        public static readonly string TargetUrl = "url:";
+        public static readonly string TargetWikipedia = "wikipedia:";
 
         static WriterUtil()
         {
@@ -69,8 +65,6 @@ namespace Maynek.Notesvel.Writer
             RubyRegex = new Regex(RubyPattern, Options);
             PointRegex = new Regex(PointPattern, Options);
             LinkRegex = new Regex(LinkPattern, Options);
-            WikipediaRegex = new Regex(WikipediaPattern, Options);
-            NoteRegex = new Regex(NotePattern, Options);
         }
 
         public static string ConvertBodyForAll(string text)

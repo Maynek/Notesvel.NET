@@ -40,8 +40,6 @@ namespace Maynek.Notesvel.Writer.Narou
             });
 
             text = WriterUtil.LinkRegex.Replace(text, Writer.LinkReplace);
-            text = WriterUtil.WikipediaRegex.Replace(text, Writer.WikipediaReplace);
-            text = WriterUtil.NoteRegex.Replace(text, Writer.NoteReplace);
 
             return text;
         }

@@ -69,10 +69,26 @@ namespace Maynek.Notesvel.Writer.NextSite
 
                 return sb.ToString();
             });
+            
+            text = WriterUtil.LinkRegex.Replace(text, delegate (Match m)
+            {
+                var word = m.Groups["WORD"].ToString();
+                var target = m.Groups["TARGET"].ToString();
 
-            text = WriterUtil.LinkRegex.Replace(text, Writer.LinkReplace);
-            text = WriterUtil.WikipediaRegex.Replace(text, Writer.WikipediaReplace);
-            text = WriterUtil.NoteRegex.Replace(text, Writer.NoteReplace);
+                if (target.StartsWith(WriterUtil.TargetUrl))
+                {
+                    var url = target.Substring(WriterUtil.TargetUrl.Length);
+                    return LinkReplace.Replace("${WORD}", word).Replace("${URL}", url);
+                }
+                else if (target.StartsWith(WriterUtil.TargetWikipedia))
+                {
+                    var title = target.Substring(WriterUtil.TargetWikipedia.Length);
+                    return WikipediaReplace.Replace("${WORD}", word).Replace("${TITLE}", title);
+                }
+
+                return NoteReplace.Replace("${WORD}", word).Replace("${ID}", target);
+
+            });
 
             text = text.Replace("\n", "<br/>");
 
