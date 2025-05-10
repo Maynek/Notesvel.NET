@@ -126,6 +126,29 @@ namespace Maynek.Notesvel.Console
                             OutputEpisodeDirectory = narouEpisodeDirectory,
                         }.Write(novel);
                     }
+
+                    //Write for Kakuyomu.
+                    if (item.Target.Contains("Kakuyomu"))
+                    {
+                        var narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"kakuyomu\", novelId);
+                        new Writer.Kakuyomu.Writer()
+                        {
+                            InputEpisodeDirectory = inputEpisodeDirectory,
+                            OutputEpisodeDirectory = narouEpisodeDirectory,
+                        }.Write(novel);
+                    }
+
+                    //Write for Alpha.
+                    if (item.Target.Contains("Alpha"))
+                    {
+                        var narouEpisodeDirectory = Path.Combine(param.OutputRoot, @"alpha\", novelId);
+                        new Writer.Alpha.Writer()
+                        {
+                            InputEpisodeDirectory = inputEpisodeDirectory,
+                            OutputEpisodeDirectory = narouEpisodeDirectory,
+                        }.Write(novel);
+                    }
+
                 }
             }
         }
