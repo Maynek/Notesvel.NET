@@ -199,7 +199,7 @@ namespace Maynek.Notesvel.Console
                 wordTemplatePath = Path.Combine(param.TemplateDir, work.TemplateFileName);
             }
 
-            var wordDir = Path.Combine(param.OutputRoot, @"word");
+            var wordDir = Path.Combine(param.OutputRoot, novel.Id, @"word");
 
             string wordFileName;
             if (work.OutputFileName == Work.WORK_DEFAULT_VALUE)

@@ -144,9 +144,6 @@ namespace Maynek.Notesvel.Writer.OfficeWord
 
                 var documentBody = mainPart.Document.AppendChild(new Body());
 
-
-
-
                 foreach (var chapter in novel.Chapters)
                 {
                     foreach (var episode in chapter.Episodes)
