@@ -2,6 +2,9 @@
 // (c) 2024 Ada Maynek
 // This software is released under the MIT License.
 //********************************
+using DocumentFormat.OpenXml.Office2016.Drawing.Command;
+using Maynek.Notesvel.Writer.NextSite;
+using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace Maynek.Notesvel.Reader
@@ -10,7 +13,7 @@ namespace Maynek.Notesvel.Reader
 
     public class NovelReader
     {
-        public static Novel Read(string path)
+        public static Novel Read(string path, string novelId)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(path);
@@ -22,6 +25,8 @@ namespace Maynek.Notesvel.Reader
             }
 
             var novel = new Novel();
+            novel.Id = novelId;
+
             foreach (var childElement in element.ChildNodes.OfType<XmlElement>())
             {
                 switch (childElement.Name)
@@ -32,6 +37,10 @@ namespace Maynek.Notesvel.Reader
                     
                     case "SubTitle":
                         novel.SubTitle = childElement.InnerText;
+                        break;
+
+                    case "Work":
+                        NovelReader.ParseWork(childElement, novel);
                         break;
 
                     case "Chapters":
@@ -45,6 +54,56 @@ namespace Maynek.Notesvel.Reader
             }
 
             return novel;
+        }
+
+        protected static void ParseWork(XmlElement element, Novel novel)
+        {
+            var work = new Work();
+
+            if (element.HasAttribute("Enabled"))
+            {
+                work.Enabled = element.GetAttribute("Enabled").ToLower() == "true";
+            }
+
+            if (element.HasAttribute("Target"))
+            {
+                var typeValue = element.GetAttribute("Target").ToLower();
+
+                switch (typeValue)
+                {
+                    case "nextsite":
+                        work.Target = WorkTargetType.NextSite;
+                        break;
+
+                    case "word":
+                        work.Target = WorkTargetType.OfficeWord;
+                        break;
+
+                    case "narou":
+                        work.Target = WorkTargetType.ServiceNarou;
+                        break;
+
+                    case "kakuyomu":
+                        work.Target = WorkTargetType.ServiceKakuyomu;
+                        break;
+
+                    case "alphapolis":
+                        work.Target = WorkTargetType.ServiceAlphaPolis;
+                        break;
+                }
+            }
+
+            if (element.HasAttribute("OutputFileName"))
+            {
+                work.OutputFileName = element.GetAttribute("OutputFileName");
+            }
+
+            if (element.HasAttribute("TemplateFileName"))
+            {
+                work.TemplateFileName= element.GetAttribute("TemplateFileName");
+            }
+
+            novel.AddWork(work);
         }
 
         protected static void ParseChapters(XmlElement element, Novel novel)

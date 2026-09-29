@@ -6,10 +6,17 @@ namespace Maynek.Notesvel
 {
     public class Novel
     {
+        public string Id { get; set; } = string.Empty;
         public string MainTitle { get; set; } = string.Empty;
         public string SubTitle { get; set; } = string.Empty;
+        public List<Work> Works { get; } = new List<Work>();
         public Glossary Glossary { get; } = new Glossary();
         public ChapterDictionary Chapters { get; } = [];
+
+        public void AddWork(Work work)
+        {
+            this.Works.Add(work);
+        }
 
         public void SetEpisodePagenation()
         {

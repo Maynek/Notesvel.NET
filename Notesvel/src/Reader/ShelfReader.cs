@@ -37,8 +37,7 @@ namespace Maynek.Notesvel.Reader
                 {
                     case "Novel":
                         var novelId = childElement.GetAttribute("Id");
-                        var target = childElement.GetAttribute("Target");
-                        shelf.AddShelfItem(novelId, target);
+                        shelf.AddShelfItem(novelId);
                         break;
                 }
             }

@@ -5,13 +5,13 @@
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace Maynek.Notesvel.Writer.Kakuyomu
+namespace Maynek.Notesvel.Writer.ServiceKakuyomu
 {
     internal class Writer
     {
         private static readonly string HeadlineReplace = @"${TEXT}";
         private static readonly string RubyReplace = @"｜${WORD}《${RUBY}》";
-        private static readonly string PointReplace = @"《《 ${WORD}》》";
+        private static readonly string PointReplace = @"《《${WORD}》》";
         private static readonly string LinkReplace = "${WORD}";
 
         public string InputEpisodeDirectory { get; set; } = string.Empty;

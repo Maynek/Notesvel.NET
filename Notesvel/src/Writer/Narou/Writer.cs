@@ -5,15 +5,13 @@
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace Maynek.Notesvel.Writer.Narou
+namespace Maynek.Notesvel.Writer.ServiceNarou
 {
     internal class Writer
     {
         private static readonly string HeadlineReplace = @"${TEXT}";
         private static readonly string RubyReplace = @"｜${WORD}《${RUBY}》";
         private static readonly string LinkReplace = "${WORD}";
-        private static readonly string WikipediaReplace = "${WORD}";
-        private static readonly string NoteReplace = @"${WORD}";
 
         public string InputEpisodeDirectory { get; set; } = string.Empty;
         public string OutputEpisodeDirectory { get; set; } = string.Empty;

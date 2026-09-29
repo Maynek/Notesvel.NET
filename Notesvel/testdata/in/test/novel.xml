@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<NotesvelIndex>
+<Novel>
     <MainTitle>テストデータ</MainTitle>
     <SubTitle>テストデータ・サブタイトル</SubTitle>
+	<Work Target="nextsite" Enabled="true" />
+	<Work Target="narou" Enabled="true" />
+	<Work Target="kakuyomu" Enabled="true" />
+	<Work Target="alphapolis" Enabled="true" />
     <Chapters>
         <Chapter Id="c0001">
             <Title>第１章</Title>
@@ -32,4 +36,4 @@
             </Note>
         </Tab>
     </Glossary>
-</NotesvelIndex>
+</Novel>
