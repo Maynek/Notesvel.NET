@@ -4,6 +4,7 @@
     <MainTitle>テストデータ</MainTitle>
     <SubTitle>テストデータ・サブタイトル</SubTitle>
 	<Work Target="nextsite" Enabled="true" />
+	<Work Target="word" Enabled="true" TemplateFileName="Tate_40x40.docx" OutputFileName="40x40.docx" />
 	<Work Target="narou" Enabled="true" />
 	<Work Target="kakuyomu" Enabled="true" />
 	<Work Target="alphapolis" Enabled="true" />

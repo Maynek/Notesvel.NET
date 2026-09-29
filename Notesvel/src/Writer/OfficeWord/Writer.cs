@@ -25,7 +25,6 @@ namespace Maynek.Notesvel.Writer.OfficeWord
         public string InputEpisodeDirectory { get; set; } = string.Empty;
         public string OutputWordDirectory { get; set; } = string.Empty;
         public string OutputWordFileName { get; set; } = string.Empty;
-
         public string TemplatePath { get; set; } = string.Empty;
 
         private static Paragraph GetDocumentParagraph(string inputText)
@@ -136,11 +135,17 @@ namespace Maynek.Notesvel.Writer.OfficeWord
         {
             string outputPath = Path.Combine(this.OutputWordDirectory, this.OutputWordFileName);
 
-            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(outputPath, WordprocessingDocumentType.Document))
+            File.Copy(this.TemplatePath, outputPath, true);
+
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(outputPath, true))
             {
-                var mainPart = wordDocument.AddMainDocumentPart();
-                mainPart.Document = new Document();
+                var mainPart = wordDocument.MainDocumentPart;
+                //mainPart.Document = new Document();
+
                 var documentBody = mainPart.Document.AppendChild(new Body());
+
+
+
 
                 foreach (var chapter in novel.Chapters)
                 {
