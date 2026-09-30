@@ -128,7 +128,13 @@ namespace Maynek.Notesvel.Writer.OfficeWord
                 }
             }
 
-           return documentParagraph;
+            {
+                var run = new Run(new Text(textBuilder.ToString()));
+                documentParagraph.AppendChild(run);
+            }
+
+
+            return documentParagraph;
         }
 
         private void WriteEpisode(Novel novel)
